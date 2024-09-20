@@ -107,6 +107,40 @@ Film fileManager::getFilmeById(int id)
 // Método para obter 'n' filmes aleatórios
 void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
 {
+  std::ifstream binaryFile;
+  binaryFile.open(binaryFilePath, std::ios::binary);
+  if (!binaryFile.is_open())
+  {
+    std::cout << "Erro ao abrir o arquivo binário!" << std::endl;
+    throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
+  }
+
+  binaryFile.seekg(0, std::ios::end);
+  int fileSize = binaryFile.tellg();
+  int numFilms = fileSize / sizeof(Film);
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> distrib(0, numFilms - 1);
+
+  for (int i = 0; i < n; ++i)
+  {
+    int randomIndex = distrib(gen);
+
+    // Ler o filme aleatório
+    binaryFile.seekg(randomIndex * sizeof(Film), std::ios::beg);
+    Film film;
+    binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
+
+    if (!film.movieName)
+    {
+      throw std::runtime_error("Erro ao ler o filme aleatório do arquivo binário!");
+    }
+
+    filmArray.push_back(film); // Adicionar o filme à lista
+  }
+
+  binaryFile.close();
 }
 
 // Método para obter todos os filmes
