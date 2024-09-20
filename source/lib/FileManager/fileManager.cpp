@@ -11,7 +11,6 @@ fileManager::fileManager(const string &csvPath, const string &binaryPath)
   if (csvPath.empty() || binaryPath.empty())
   {
     std::cout << "Erro: Parâmetros inválidos: Caminho para o CSV ou Binário está vazio." << std::endl;
-    // Joga erro
     throw std::invalid_argument("Parâmetros inválidos: Caminho para o CSV ou Binário está vazio.");
   }
 
@@ -29,7 +28,7 @@ void fileManager::convertCSV2Bin()
   if (!csvFile.is_open())
   {
     std::cout << "Erro ao abrir o arquivo CSV! " << csvFilePath << std::endl;
-    return;
+    throw std::runtime_error("Erro ao abrir o arquivo CSV.");
   }
 
   std::ofstream binaryFile;
@@ -37,7 +36,7 @@ void fileManager::convertCSV2Bin()
   if (!binaryFile.is_open())
   {
     std::cout << "Erro ao abrir o arquivo binário para escrita! " << binaryFilePath << std::endl;
-    return;
+    throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
   }
 
   string line;
@@ -81,7 +80,28 @@ void fileManager::convertCSV2Bin()
 // Método para obter um filme pelo ID sendo ID o índice do vetor
 Film fileManager::getFilmeById(int id)
 {
-  return {};
+  std::ifstream binaryFile;
+  binaryFile.open(binaryFilePath, std::ios::binary);
+  if (!binaryFile.is_open())
+  {
+    std::cout << "Erro ao abrir o arquivo binário!" << std::endl;
+    throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
+  }
+
+  binaryFile.seekg(id * sizeof(Film), std::ios::beg);
+
+  Film film;
+  binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
+
+  // verifica se o filme encontrado tem nome, se não tiver nome é sinal que não foi encontrado o filme
+  if (!film.movieName)
+  {
+    std::cout << "ID do filme inválido!" << std::endl;
+    throw std::out_of_range("ID do filme inválido.");
+  }
+
+  binaryFile.close();
+  return film;
 }
 
 // Método para obter 'n' filmes aleatórios
