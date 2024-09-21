@@ -2,8 +2,6 @@
 #include <string>
 #include "fileManager.h"
 
-using namespace std;
-
 // Testa instanciar fileManager com parâmetros errados
 
 int main()

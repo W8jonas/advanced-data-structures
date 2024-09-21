@@ -11,8 +11,8 @@ int main()
   fileManager fManager(csvPath, binaryPath);
 
   // Lê filme de indice 2
-  Film filmeNome = fManager.getFilmeById(2);
-  cout << "Nome do filme: " << filmeNome.movieName << " popularidade: " << filmeNome.popularity << " voto_average: " << filmeNome.vote_average << endl;
+  Film specificFilm = fManager.getFilmeById(4);
+  cout << "Nome do filme: " << specificFilm.movieName << " popularidade: " << specificFilm.popularity << " voto_average: " << specificFilm.vote_average << endl;
   cout << endl;
 
   // Lê N filmes aleatórios
