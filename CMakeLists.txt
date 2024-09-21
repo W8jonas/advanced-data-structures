@@ -21,14 +21,17 @@ add_library(FileManager source/lib/FileManager/fileManager.cpp)
 # Configurar testes da classe FileManager
 add_executable(test1_FileManager source/lib/FileManager/test1.cpp)
 add_executable(test2_FileManager source/lib/FileManager/test2.cpp)
+add_executable(test3_FileManager source/lib/FileManager/test3.cpp)
 
 # Vincular a biblioteca FileManager aos seus testes
 target_link_libraries(test1_FileManager FileManager)
 target_link_libraries(test2_FileManager FileManager)
+target_link_libraries(test3_FileManager FileManager)
 
 # Garantir que os arquivos de teste sejam considerados como testes
 add_test(NAME test1_FileManager COMMAND test1_FileManager)
 add_test(NAME test2_FileManager COMMAND test2_FileManager)
+add_test(NAME test3_FileManager COMMAND test3_FileManager)
 
 
 
