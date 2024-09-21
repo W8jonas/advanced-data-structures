@@ -146,4 +146,32 @@ void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
 // Método para obter todos os filmes
 void fileManager::getAllFilms(std::vector<Film> &filmArray)
 {
+  std::ifstream binaryFile;
+  binaryFile.open(binaryFilePath, std::ios::binary);
+  if (!binaryFile.is_open())
+  {
+    std::cout << "Erro ao abrir o arquivo binário!" << std::endl;
+    throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
+  }
+
+  binaryFile.seekg(0, std::ios::end);
+  int fileSize = binaryFile.tellg();
+  int numFilms = fileSize / sizeof(Film);
+
+  binaryFile.seekg(0, std::ios::beg);
+
+  for (int i = 0; i < numFilms; ++i)
+  {
+    Film film;
+    binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
+
+    if (binaryFile.gcount() < sizeof(Film))
+    {
+      throw std::runtime_error("Erro ao ler um filme do arquivo binário!");
+    }
+
+    filmArray.push_back(film);
+  }
+
+  binaryFile.close();
 }
