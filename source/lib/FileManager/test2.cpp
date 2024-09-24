@@ -16,9 +16,9 @@ int main()
 
     Film specificFilm = manager.getFilmeById(4);
 
-    assert(std::string(specificFilm.movieName) == "Father of the Bride Part II");
+    assert(std::string(specificFilm.originalTitle) == "Father of the Bride Part II");
     assert(specificFilm.popularity == 8.387519);
-    assert(specificFilm.vote_average == 5.7);
+    assert(specificFilm.voteAverage == 5.7);
     return 0;
   }
   catch (const std::out_of_range &e)
