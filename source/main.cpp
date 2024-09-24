@@ -5,31 +5,30 @@ using namespace std;
 
 int main()
 {
-  string csvPath = "../source/data/movies_dataset_min.csv";
+  string csvPath = "../source/data/movies_dataset.csv";
   string binaryPath = "../source/data/filmes.bin";
 
-  fileManager fManager(csvPath, binaryPath);
-
-  // Lê filme de indice 2
-  Film specificFilm = fManager.getFilmeById(4);
-  cout << "Nome do filme: " << specificFilm.movieName << " popularidade: " << specificFilm.popularity << " voto_average: " << specificFilm.vote_average << endl;
-  cout << endl;
-
-  // Lê N filmes aleatórios
-  vector<Film> filmList;
-  fManager.getRandomNFilms(3, filmList);
-  for (int i = 0; i < filmList.size(); i++)
+  try
   {
-    cout << "Nome do filme: " << filmList[i].movieName << " popularidade: " << filmList[i].popularity << " voto_average: " << filmList[i].vote_average << endl;
+    fileManager fManager(csvPath, binaryPath);
+
+    // Lê filme de indice 2
+    Film specificFilm = fManager.getFilmeById(4);
+    std::cout << "Nome do filme: " << specificFilm.originalTitle << " popularidade: " << specificFilm.popularity << " voto_average: " << specificFilm.voteAverage << std::endl;
+    std::cout << std::endl;
+
+    // Lê N filmes aleatórios
+    vector<Film> filmList;
+    fManager.getRandomNFilms(3, filmList);
+    for (int i = 0; i < filmList.size(); i++)
+    {
+      std::cout << "Nome do filme: " << filmList[i].originalTitle << " popularidade: " << filmList[i].popularity << " voto_average: " << filmList[i].voteAverage << std::endl;
+    }
+    std::cout << std::endl;
   }
-  cout << endl;
-
-  // Lê todos os filmes em ordem
-  vector<Film> allFilms;
-  fManager.getAllFilms(allFilms);
-  for (int i = 0; i < allFilms.size(); i++)
+  catch (const std::exception &e)
   {
-    cout << "Nome do filme: " << allFilms[i].movieName << " popularidade: " << allFilms[i].popularity << " voto_average: " << allFilms[i].vote_average << endl;
+    std::cout << e.what() << std::endl;
   }
 
   return 0;
