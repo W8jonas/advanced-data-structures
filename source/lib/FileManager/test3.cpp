@@ -18,15 +18,15 @@ int main()
     manager.getAllFilms(allFilms);
 
     assert(allFilms.size() == 9);
-    assert(std::string(allFilms[0].movieName) == "Toy Story");
-    assert(std::string(allFilms[1].movieName) == "Jumanji");
-    assert(std::string(allFilms[2].movieName) == "Grumpier Old Men");
-    assert(std::string(allFilms[3].movieName) == "Waiting to Exhale");
-    assert(std::string(allFilms[4].movieName) == "Father of the Bride Part II");
-    assert(std::string(allFilms[5].movieName) == "Heat");
-    assert(std::string(allFilms[6].movieName) == "Sabrina");
-    assert(std::string(allFilms[7].movieName) == "Tom and Huck");
-    assert(std::string(allFilms[8].movieName) == "Sudden Death");
+    assert(std::string(allFilms[0].originalTitle) == "Toy Story");
+    assert(std::string(allFilms[1].originalTitle) == "Jumanji");
+    assert(std::string(allFilms[2].originalTitle) == "Grumpier Old Men");
+    assert(std::string(allFilms[3].originalTitle) == "Waiting to Exhale");
+    assert(std::string(allFilms[4].originalTitle) == "Father of the Bride Part II");
+    assert(std::string(allFilms[5].originalTitle) == "Heat");
+    assert(std::string(allFilms[6].originalTitle) == "Sabrina");
+    assert(std::string(allFilms[7].originalTitle) == "Tom and Huck");
+    assert(std::string(allFilms[8].originalTitle) == "Sudden Death");
 
     return 0;
   }
