@@ -47,29 +47,78 @@ void fileManager::convertCSV2Bin()
     Film film;
     string temp;
 
-    std::getline(ss, temp, ';'); // lê index
-    std::getline(ss, temp, ';'); // lê adult
-    std::getline(ss, temp, ';'); // lê genres
-    std::getline(ss, temp, ';'); // lê id
-    std::getline(ss, temp, ';'); // lê imdb_id
-    std::getline(ss, temp, ';'); // lê original_language
-    std::getline(ss, temp, ';'); // lê original_title
-    strncpy(film.movieName, temp.c_str(), sizeof(film.movieName));
+    std::cout << "Getline: " << line << std::endl;
 
-    std::getline(ss, temp, ';'); // lê overview
-    std::getline(ss, temp, ';'); // lê popularity
-    film.popularity = stod(temp);
+    // Lê e ignora o index
+    std::getline(ss, temp, ';');
 
-    std::getline(ss, temp, ';'); // lê production_companies
-    std::getline(ss, temp, ';'); // lê production_countries
-    std::getline(ss, temp, ';'); // lê release_date
-    std::getline(ss, temp, ';'); // lê Revenue
-    std::getline(ss, temp, ';'); // lê Runtime
-    std::getline(ss, temp, ';'); // lê spoken_languages
-    std::getline(ss, temp, ';'); // lê Title
-    std::getline(ss, temp, ';'); // lê Vote average
-    film.vote_average = stod(temp);
-    std::getline(ss, temp, ';'); // lê vote_count
+    // Lê o campo 'adult' e converte para bool
+    std::getline(ss, temp, ';');
+    film.adult = (temp == "True");
+
+    // Lê o campo 'genres'
+    std::getline(ss, temp, ';');
+    strncpy(film.genres, temp.c_str(), sizeof(film.genres));
+
+    // Lê o campo 'id'
+    std::getline(ss, temp, ';');
+    film.databaseId = std::stoi(temp);
+
+    // Lê o campo 'imdb_id'
+    std::getline(ss, temp, ';');
+    strncpy(film.imdbId, temp.c_str(), sizeof(film.imdbId));
+
+    // Lê o campo 'original_language'
+    std::getline(ss, temp, ';');
+    strncpy(film.originalLanguage, temp.c_str(), sizeof(film.originalLanguage));
+
+    // Lê o campo 'original_title' (nome do filme)
+    std::getline(ss, temp, ';');
+    strncpy(film.originalTitle, temp.c_str(), sizeof(film.originalTitle));
+
+    // Lê o campo 'overview' (resumo)
+    std::getline(ss, temp, ';');
+    strncpy(film.overview, temp.c_str(), sizeof(film.overview));
+
+    // Lê o campo 'popularity'
+    std::getline(ss, temp, ';');
+    film.popularity = std::stod(temp);
+
+    // Lê o campo 'production_companies'
+    std::getline(ss, temp, ';');
+    strncpy(film.productionCompanies, temp.c_str(), sizeof(film.productionCompanies));
+
+    // Lê o campo 'production_countries'
+    std::getline(ss, temp, ';');
+    strncpy(film.productionCountries, temp.c_str(), sizeof(film.productionCountries));
+
+    // Lê o campo 'release_date' e extrai o ano
+    std::getline(ss, temp, ';');
+    film.yearOfRelease = std::stoi(temp.substr(0, 4)); // Extrai os 4 primeiros caracteres (ano)
+
+    // Lê o campo 'revenue'
+    std::getline(ss, temp, ';');
+    film.revenue = std::stod(temp);
+
+    // Lê o campo 'runtime'
+    std::getline(ss, temp, ';');
+    film.runtime = std::stoi(temp);
+
+    // Lê o campo 'spoken_languages'
+    std::getline(ss, temp, ';');
+    strncpy(film.spokenLanguages, temp.c_str(), sizeof(film.spokenLanguages));
+
+    // Lê o título
+    std::getline(ss, temp, ';');
+    strncpy(film.title, temp.c_str(), sizeof(film.title));
+
+    // Lê o campo 'vote_average'
+    std::getline(ss, temp, ';');
+    film.voteAverage = std::stod(temp);
+
+    // Lê o campo 'vote_count'
+    std::getline(ss, temp, ';');
+    film.voteCount = std::stoi(temp);
 
     binaryFile.write(reinterpret_cast<char *>(&film), sizeof(Film));
   }
@@ -94,7 +143,7 @@ Film fileManager::getFilmeById(int id)
   binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
 
   // verifica se o filme encontrado tem nome, se não tiver nome é sinal que não foi encontrado o filme
-  if (!film.movieName)
+  if (!film.originalTitle)
   {
     std::cout << "ID do filme inválido!" << std::endl;
     throw std::out_of_range("ID do filme inválido.");
@@ -132,7 +181,7 @@ void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
     Film film;
     binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
 
-    if (!film.movieName)
+    if (!film.originalTitle)
     {
       throw std::runtime_error("Erro ao ler o filme aleatório do arquivo binário!");
     }
