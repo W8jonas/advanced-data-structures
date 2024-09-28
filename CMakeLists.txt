@@ -11,12 +11,9 @@ include_directories(${PROJECT_SOURCE_DIR}/source/types)
 include(CTest)
 enable_testing()
 
-
 # Adicionar as bibliotecas .cpp
 add_library(FileManager source/lib/FileManager/fileManager.cpp)
-#add_library(Sort source/lib/Sort/sort.cpp)
-
-
+add_library(Quicksort source/lib/Quicksort/quicksort.cpp)
 
 # Configurar testes da classe FileManager
 add_executable(test1_FileManager source/lib/FileManager/test1.cpp)
@@ -33,26 +30,21 @@ add_test(NAME test1_FileManager COMMAND test1_FileManager)
 add_test(NAME test2_FileManager COMMAND test2_FileManager)
 add_test(NAME test3_FileManager COMMAND test3_FileManager)
 
+# Configurar testes da classe Quicksort
+add_executable(test1_Quicksort source/lib/Quicksort/test1.cpp)
+add_executable(test2_Quicksort source/lib/Quicksort/test2.cpp)
 
+# Vincular a biblioteca Quicksort aos seus testes
+target_link_libraries(test1_Quicksort Quicksort FileManager) # Adiciona FileManager aqui se necessário
+target_link_libraries(test2_Quicksort Quicksort FileManager) # Adiciona FileManager aqui se necessário
 
-# Configurar testes da classe Sort (comentado por enquanto)
-#add_executable(test1_Sort source/lib/Sort/test1.cpp)
-#add_executable(test2_Sort source/lib/Sort/test2.cpp)
-
-# Vincular a biblioteca Sort aos seus testes (comentado por enquanto)
-#target_link_libraries(test1_Sort Sort)
-#target_link_libraries(test2_Sort Sort)
-
-# Adicionar os testes de Sort mais tarde, quando implementados
-#add_test(NAME test1_Sort COMMAND test1_Sort)
-#add_test(NAME test2_Sort COMMAND test2_Sort)
-
+# Adicionar os testes de Quicksort mais tarde, quando implementados
+add_test(NAME test1_Quicksort COMMAND test1_Quicksort)
+add_test(NAME test2_Quicksort COMMAND test2_Quicksort)
 
 # Adicionar o executável principal
 add_executable(viier_exec source/main.cpp)
-target_link_libraries(viier_exec FileManager)
-
-
+target_link_libraries(viier_exec FileManager Quicksort) # Vincula ambas as bibliotecas
 
 # Especificar o diretório de saída para executáveis
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../build)
@@ -61,4 +53,3 @@ target_link_libraries(viier_exec FileManager)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
-
