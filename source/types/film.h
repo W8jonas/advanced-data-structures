@@ -9,7 +9,7 @@ typedef struct
   char imdbId[10];
   char originalLanguage[5];
   char originalTitle[51];
-  char overview[1300];
+  char overview[1500];
   double popularity;
   char productionCompanies[51];
   char productionCountries[51];

@@ -1,0 +1,12 @@
+;adult;genres;id;imdb_id;original_language;original_title;overview;popularity;production_companies;production_countries;release_date;revenue;runtime;spoken_languages;title;vote_average;vote_count
+0;False;genres;862;tt0114709;en;Toy Story;Led by Woody.;1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+1;False;genres;862;tt0114709;en;Toy Story;"Led by Woody.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+2;False;genres;862;tt0114709;en;Toy Story;"Led ""by"" Woody.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+3;False;genres;862;tt0114709;en;Toy Story;"Led by; Woody.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+4;False;genres;862;tt0114709;en;Toy Story;"Led; by; Woody;.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+5;False;genres;862;tt0114709;en;Toy Story;"Led ""by""; Woody.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+6;False;genres;862;tt0114709;en;Toy Story;"Led by
+ Woody.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+7;False;genres;862;tt0114709;en;Toy Story;"Led ""b
+y"" Woody.";1.9;production_companies;production_countries;1995-10-30;3.0;81.0;spoken_languages;Toy Story;7.7;5415.0
+45130;False;[{'id': 35, 'name': 'Comedy'}];415892;tt6070530;ru;Жених;"On 9 May a German comes to Russia to marry the Russian beauty Alena, whom he had met in Berlin. The happy couple goes to the village to meet the bride’s relatives. However, Alena’s former husband Tolya is also on the way there: he has unexpectedly decided to get his wife back. Everything turns out as a romantic rivalry, which involves – apart from Tolya and Helmut – their friends, relatives, and the other inhabitants of the village: the businessman Yerofeev who has bought a house in the neighbourhood; a lost tank-man; and even a kite – they all meddle in the events.";0.77925;[{'name': 'THT', 'id': 82340}, {'name': 'Solaris Promo Production', 'id': 82341}];[{'iso_3166_1': 'RU', 'name': 'Russia'}];2016-09-15;0.0;90.0;[{'iso_639_1': 'ru', 'name': 'Pусский'}];The Groom;5.2;10.0
