@@ -21,13 +21,32 @@ fileManager::fileManager(const string &csvPath, const string &binaryPath)
   convertCSV2Bin();
 }
 
+string getNextValue(stringstream &ss, std::ifstream &csvFile)
+{
+  string temp;
+  std::getline(ss, temp, ';');
+  return temp;
+}
+
 bool getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData)
 {
+  string line;
+  std::getline(csvFile, line);
+  stringstream ss(line);
 
+  // pega a linha completa e vai passando as colunas para o array;
+  for (size_t i = 0; i < 18; i++)
+  {
+    string value = getNextValue(ss, csvFile);
+    if (value.empty())
+    {
+      return true;
+    }
+    csvLineData.push_back(value);
+  }
   return false;
 }
 
-// Método privado para carregar filmes do arquivo CSV
 void fileManager::convertCSV2Bin()
 {
   std::ifstream csvFile;
@@ -55,6 +74,7 @@ void fileManager::convertCSV2Bin()
     std::vector<string> csvLineData;
     error = getNextLine(csvFile, csvLineData);
 
+    std::cout << "getNextLine - error: " << error << std::endl;
     if (error)
       break;
 
@@ -67,11 +87,32 @@ void fileManager::convertCSV2Bin()
 
     Film film = {};
 
+    film.adult = (csvLineData[0] == "True");
+    strncpy(film.genres, csvLineData[1].c_str(), sizeof(film.genres));
+    film.databaseId = std::stoi(csvLineData[2]);
+    strncpy(film.imdbId, csvLineData[3].c_str(), sizeof(film.imdbId));
+    strncpy(film.originalLanguage, csvLineData[4].c_str(), sizeof(film.originalLanguage));
+    strncpy(film.originalTitle, csvLineData[5].c_str(), sizeof(film.originalTitle));
+    strncpy(film.overview, csvLineData[6].c_str(), sizeof(film.overview) - 1);
+    film.popularity = std::stod(csvLineData[7]);
+    strncpy(film.productionCompanies, csvLineData[8].c_str(), sizeof(film.productionCompanies));
+    strncpy(film.productionCountries, csvLineData[9].c_str(), sizeof(film.productionCountries));
+    film.yearOfRelease = std::stoi(csvLineData[10].substr(0, 4)); // Extrai os 4 primeiros caracteres (ano)
+    film.revenue = std::stod(csvLineData[11]);
+    film.runtime = std::stoi(csvLineData[12]);
+    strncpy(film.spokenLanguages, csvLineData[13].c_str(), sizeof(film.spokenLanguages));
+    strncpy(film.title, csvLineData[14].c_str(), sizeof(film.title));
+    film.voteAverage = std::stod(csvLineData[15]);
+    film.voteCount = std::stoi(csvLineData[16]);
+
     binaryFile.write(reinterpret_cast<char *>(&film), sizeof(Film));
   }
   csvFile.close();
   binaryFile.close();
+  std::cout << "FINALIZOU convertCSV2Bin" << std::endl;
 }
+
+// Método privado para carregar filmes do arquivo CSV
 
 // Método para obter um filme pelo ID sendo ID o índice do vetor
 Film fileManager::getFilmeById(int id)
