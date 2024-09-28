@@ -21,11 +21,69 @@ fileManager::fileManager(const string &csvPath, const string &binaryPath)
   convertCSV2Bin();
 }
 
+bool verifyQuotedString(const std::string &string)
+{
+  bool quoted = false;
+  for (size_t i = 0; i < string.size(); i++)
+  {
+    if (string[i] == '"')
+    {
+      quoted = !quoted;
+    }
+  }
+  return quoted;
+}
+
 string getNextValue(stringstream &ss, std::ifstream &csvFile)
 {
   string temp;
   std::getline(ss, temp, ';');
-  return temp;
+
+  // Faz o processamento do texto aqui!
+  // Se começa com '"' então fazemos tratamento;
+  if (temp.front() == '"')
+  {
+    bool quoted = verifyQuotedString(temp);
+
+    // Se quoted for true, significa que aspas estão abertas, ou seja, precisa ser mais conteúdo;
+    if (quoted == false)
+    {
+      return temp;
+    }
+
+    int indd = 0;
+    char separator;
+
+    while (quoted && indd < 50)
+    {
+      indd++;
+      // lê próximo bloco de texto, acumula em temp e refaz quoted;
+      std::string stringAccumulator;
+      std::getline(ss, stringAccumulator, ';');
+      separator = ';';
+
+      if (stringAccumulator.empty())
+      {
+        // deve ler a próxima linha do arquivo CSV porque nessa linha atual já leu tudo e não achou o fim
+        string line;
+        std::getline(csvFile, line);
+        separator = '\n';
+
+        std::stringstream newSS(line); // Nova linha de dados
+        std::getline(newSS, stringAccumulator, ';');
+        ss = std::move(newSS);
+      }
+      temp = temp + separator + stringAccumulator;
+
+      quoted = verifyQuotedString(temp);
+    }
+
+    return temp;
+  }
+  else
+  {
+    return temp;
+  }
 }
 
 bool getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData)
