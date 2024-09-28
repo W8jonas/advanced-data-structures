@@ -57,7 +57,6 @@ string getNextValue(stringstream &ss, std::ifstream &csvFile)
     while (quoted && indd < 50)
     {
       indd++;
-      // lê próximo bloco de texto, acumula em temp e refaz quoted;
       std::string stringAccumulator;
       std::getline(ss, stringAccumulator, ';');
       separator = ';';
@@ -132,16 +131,10 @@ void fileManager::convertCSV2Bin()
     std::vector<string> csvLineData;
     error = getNextLine(csvFile, csvLineData);
 
-    std::cout << "getNextLine - error: " << error << std::endl;
     if (error)
       break;
 
     csvLineData.erase(csvLineData.begin());
-
-    for (size_t i = 0; i < csvLineData.size(); i++)
-    {
-      std::cout << "csvLineData :" << i << " " << csvLineData[i] << std::endl;
-    }
 
     Film film = {};
 
@@ -167,7 +160,6 @@ void fileManager::convertCSV2Bin()
   }
   csvFile.close();
   binaryFile.close();
-  std::cout << "FINALIZOU convertCSV2Bin" << std::endl;
 }
 
 // Método privado para carregar filmes do arquivo CSV
