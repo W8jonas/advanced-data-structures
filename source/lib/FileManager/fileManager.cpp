@@ -21,7 +21,8 @@ fileManager::fileManager(const string &csvPath, const string &binaryPath)
   convertCSV2Bin();
 }
 
-bool verifyQuotedString(const std::string &string)
+// Método privado para verificar se texto está com aspas corretamente
+bool fileManager::verifyQuotedString(const std::string &string)
 {
   bool quoted = false;
   for (size_t i = 0; i < string.size(); i++)
@@ -34,7 +35,8 @@ bool verifyQuotedString(const std::string &string)
   return quoted;
 }
 
-string getNextValue(stringstream &ss, std::ifstream &csvFile)
+// Método privado para ler o próximo valor da linha atual e tratar texto entre aspas
+string fileManager::getNextValue(stringstream &ss, std::ifstream &csvFile)
 {
   string temp;
   std::getline(ss, temp, ';');
@@ -85,7 +87,8 @@ string getNextValue(stringstream &ss, std::ifstream &csvFile)
   }
 }
 
-bool getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData)
+// Método privado para ler o conteúdo da linha no CSV
+bool fileManager::getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData)
 {
   string line;
   std::getline(csvFile, line);
@@ -104,6 +107,7 @@ bool getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData)
   return false;
 }
 
+// Método privado para carregar filmes do arquivo CSV
 void fileManager::convertCSV2Bin()
 {
   std::ifstream csvFile;
@@ -161,8 +165,6 @@ void fileManager::convertCSV2Bin()
   csvFile.close();
   binaryFile.close();
 }
-
-// Método privado para carregar filmes do arquivo CSV
 
 // Método para obter um filme pelo ID sendo ID o índice do vetor
 Film fileManager::getFilmeById(int id)

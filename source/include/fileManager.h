@@ -19,7 +19,9 @@ private:
   string csvFilePath;
   string binaryFilePath;
   void convertCSV2Bin();
-  vector<Film> films;
+  bool verifyQuotedString(const std::string &string);
+  string getNextValue(stringstream &ss, std::ifstream &csvFile);
+  bool getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData);
 };
 
 #endif // FILEMANAGER_H
