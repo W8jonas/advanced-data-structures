@@ -5,23 +5,24 @@
 #include <vector>
 #include "film.h"
 
-using namespace std;
-
 class fileManager
 {
 public:
-  fileManager(const string &csvPath, const string &binaryPath);
+  fileManager(const std::string &entryPath);
   Film getFilmeById(int id);
-  void getRandomNFilms(int n, vector<Film> &filmArray);
-  void getAllFilms(vector<Film> &filmArray);
+  void getRandomNFilms(int n, std::vector<Film> &filmArray);
+  void getAllFilms(std::vector<Film> &filmArray);
+  std::vector<std::string> getFileRead(std::string filename);
+  void writeFile(std::string filename, std::string content);
+  void convertCSV2Bin(const std::string &csvFilename, const std::string &binaryFilename);
 
 private:
-  string csvFilePath;
-  string binaryFilePath;
-  void convertCSV2Bin();
+  std::string entryPath;
+  std::string csvFilename;
+  std::string binaryFilename;
   bool verifyQuotedString(const std::string &string);
-  string getNextValue(stringstream &ss, std::ifstream &csvFile);
-  bool getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData);
+  std::string getNextValue(std::stringstream &ss, std::ifstream &csvFile);
+  bool getNextLine(std::ifstream &csvFile, std::vector<std::string> &csvLineData);
 };
 
 #endif // FILEMANAGER_H

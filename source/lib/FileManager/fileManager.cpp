@@ -6,19 +6,16 @@
 #include "fileManager.h"
 
 // Construtor - verifica inicializa os caminhos dos arquivos e chama convertCSV2Bin
-fileManager::fileManager(const string &csvPath, const string &binaryPath)
+fileManager::fileManager(const std::string &entryPath)
 {
 
-  if (csvPath.empty() || binaryPath.empty())
+  if (entryPath.empty())
   {
-    std::cout << "Erro: Parâmetros inválidos: Caminho para o CSV ou Binário está vazio." << std::endl;
-    throw std::invalid_argument("Parâmetros inválidos: Caminho para o CSV ou Binário está vazio.");
+    std::cout << "Erro: Parâmetros inválidos: Caminho para a pasta de arquivos está vazio." << std::endl;
+    throw std::invalid_argument("Parâmetros inválidos: Caminho para a pasta de arquivos está vazio.");
   }
 
-  this->csvFilePath = csvPath;
-  this->binaryFilePath = binaryPath;
-
-  convertCSV2Bin();
+  this->entryPath = entryPath;
 }
 
 // Método privado para verificar se texto está com aspas corretamente
@@ -36,9 +33,9 @@ bool fileManager::verifyQuotedString(const std::string &string)
 }
 
 // Método privado para ler o próximo valor da linha atual e tratar texto entre aspas
-string fileManager::getNextValue(stringstream &ss, std::ifstream &csvFile)
+std::string fileManager::getNextValue(std::stringstream &ss, std::ifstream &csvFile)
 {
-  string temp;
+  std::string temp;
   std::getline(ss, temp, ';');
 
   // Faz o processamento do texto aqui!
@@ -66,7 +63,7 @@ string fileManager::getNextValue(stringstream &ss, std::ifstream &csvFile)
       if (stringAccumulator.empty())
       {
         // deve ler a próxima linha do arquivo CSV porque nessa linha atual já leu tudo e não achou o fim
-        string line;
+        std::string line;
         std::getline(csvFile, line);
         separator = '\n';
 
@@ -88,16 +85,16 @@ string fileManager::getNextValue(stringstream &ss, std::ifstream &csvFile)
 }
 
 // Método privado para ler o conteúdo da linha no CSV
-bool fileManager::getNextLine(std::ifstream &csvFile, std::vector<string> &csvLineData)
+bool fileManager::getNextLine(std::ifstream &csvFile, std::vector<std::string> &csvLineData)
 {
-  string line;
+  std::string line;
   std::getline(csvFile, line);
-  stringstream ss(line);
+  std::stringstream ss(line);
 
   // pega a linha completa e vai passando as colunas para o array;
   for (size_t i = 0; i < 18; i++)
   {
-    string value = getNextValue(ss, csvFile);
+    std::string value = getNextValue(ss, csvFile);
     if (value.empty())
     {
       return true;
@@ -108,31 +105,34 @@ bool fileManager::getNextLine(std::ifstream &csvFile, std::vector<string> &csvLi
 }
 
 // Método privado para carregar filmes do arquivo CSV
-void fileManager::convertCSV2Bin()
+void fileManager::convertCSV2Bin(const std::string &csvFilename, const std::string &binaryFilename)
 {
+  this->csvFilename = csvFilename;
+  this->binaryFilename = binaryFilename;
+
   std::ifstream csvFile;
-  csvFile.open(csvFilePath);
+  csvFile.open(this->entryPath + csvFilename);
   if (!csvFile.is_open())
   {
-    std::cout << "Erro ao abrir o arquivo CSV! " << csvFilePath << std::endl;
+    std::cout << "Erro ao abrir o arquivo CSV! " << this->entryPath + csvFilename << std::endl;
     throw std::runtime_error("Erro ao abrir o arquivo CSV.");
   }
 
   std::ofstream binaryFile;
-  binaryFile.open(binaryFilePath, std::ios::binary);
+  binaryFile.open(this->entryPath + binaryFilename, std::ios::binary);
   if (!binaryFile.is_open())
   {
-    std::cout << "Erro ao abrir o arquivo binário para escrita! " << binaryFilePath << std::endl;
+    std::cout << "Erro ao abrir o arquivo binário para escrita! " << this->entryPath + binaryFilename << std::endl;
     throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
   }
 
-  string header;
+  std::string header;
   std::getline(csvFile, header);
 
   bool error = false;
   while (!error)
   {
-    std::vector<string> csvLineData;
+    std::vector<std::string> csvLineData;
     error = getNextLine(csvFile, csvLineData);
 
     if (error)
@@ -166,14 +166,49 @@ void fileManager::convertCSV2Bin()
   binaryFile.close();
 }
 
+// Método público para ler arquivo .dat e retornar vetor de string com valores
+std::vector<std::string> fileManager::getFileRead(std::string filename)
+{
+  std::ifstream file;
+  file.open(this->entryPath + filename);
+  if (!file.is_open())
+  {
+    std::cout << "Erro ao abrir o arquivo " << this->entryPath + filename << std::endl;
+    throw std::runtime_error("Erro ao abrir o arquivo.");
+  }
+
+  std::vector<std::string> fileData;
+  bool error = false;
+  while (!error)
+  {
+    error = getNextLine(file, fileData);
+
+    if (error)
+      break;
+  }
+  file.close();
+  return fileData;
+}
+
+void fileManager::writeFile(std::string filename, std::string content)
+{
+  std::ifstream file;
+  file.open(this->entryPath + filename);
+  if (!file.is_open())
+  {
+    std::cout << "Erro ao abrir o arquivo " << this->entryPath + filename << std::endl;
+    throw std::runtime_error("Erro ao abrir o arquivo.");
+  }
+}
+
 // Método para obter um filme pelo ID sendo ID o índice do vetor
 Film fileManager::getFilmeById(int id)
 {
   std::ifstream binaryFile;
-  binaryFile.open(binaryFilePath, std::ios::binary);
+  binaryFile.open(this->entryPath + this->binaryFilename, std::ios::binary);
   if (!binaryFile.is_open())
   {
-    std::cout << "Erro ao abrir o arquivo binário!" << std::endl;
+    std::cout << "Erro ao abrir o arquivo binário." << this->entryPath + this->binaryFilename << std::endl;
     throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
   }
 
@@ -197,10 +232,10 @@ Film fileManager::getFilmeById(int id)
 void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
 {
   std::ifstream binaryFile;
-  binaryFile.open(binaryFilePath, std::ios::binary);
+  binaryFile.open(this->entryPath + this->binaryFilename, std::ios::binary);
   if (!binaryFile.is_open())
   {
-    std::cout << "Erro ao abrir o arquivo binário!" << std::endl;
+    std::cout << "Erro ao abrir o arquivo binário." << this->entryPath + this->binaryFilename << std::endl;
     throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
   }
 
@@ -236,10 +271,10 @@ void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
 void fileManager::getAllFilms(std::vector<Film> &filmArray)
 {
   std::ifstream binaryFile;
-  binaryFile.open(binaryFilePath, std::ios::binary);
+  binaryFile.open(this->entryPath + this->binaryFilename, std::ios::binary);
   if (!binaryFile.is_open())
   {
-    std::cout << "Erro ao abrir o arquivo binário!" << std::endl;
+    std::cout << "Erro ao abrir o arquivo binário." << this->entryPath + this->binaryFilename << std::endl;
     throw std::runtime_error("Erro ao abrir o arquivo binário para escrita.");
   }
 
