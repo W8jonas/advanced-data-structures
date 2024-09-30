@@ -8,11 +8,11 @@ int main()
 {
   try
   {
-    fileManager manager("", "");
+    fileManager manager("");
     // Se não lançar exceção, o teste falhou
     return -1;
   }
-  catch (const invalid_argument &e)
+  catch (const std::invalid_argument &e)
   {
     // Se a exceção correta for capturada, o teste passou
     return 0;

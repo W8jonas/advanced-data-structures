@@ -10,11 +10,16 @@ int main()
 {
   try
   {
-    string csvPath = "../source/data/movies_dataset_min.csv";
-    string binaryPath = "../source/data/filmes.bin";
-    fileManager manager(csvPath, binaryPath);
+    std::string entryPath = "../source/data/";
+    std::string csvFilename = "movies_dataset_min.csv";
+    std::string binaryFilename = "filmes.bin";
 
-    vector<Film> allFilms;
+    fileManager manager(entryPath);
+    manager.convertCSV2Bin(csvFilename, binaryFilename);
+
+    Film specificFilm = manager.getFilmeById(4);
+
+    std::vector<Film> allFilms;
     manager.getAllFilms(allFilms);
 
     assert(allFilms.size() == 9);
