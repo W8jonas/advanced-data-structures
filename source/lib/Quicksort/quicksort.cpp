@@ -1,7 +1,7 @@
 #include "quicksort.h"
 
 // Implementação do algoritmo Quicksort
-void Sort::quicksortHelper(std::vector<Film> &films, int low, int high, SortResult &result) {
+void Quicksort::quicksortHelper(std::vector<Film> &films, int low, int high, SortResult &result) {
     if (low < high) { // Verifica se ainda há elementos para ordenar
         Film pivot = films[high]; // Escolhe o último elemento como pivô
         int i = (low - 1); // Índice do menor element'o
@@ -9,7 +9,7 @@ void Sort::quicksortHelper(std::vector<Film> &films, int low, int high, SortResu
         // Loop para comparar e organizar os elementos em relação ao pivô
         for (int j = low; j <= high - 1; j++) {
             result.comparisons++; // Contabiliza uma comparação
-            if (films[j].popularity < pivot.popularity) { // Se o elemento atual for menor que o pivô
+            if (films[j].popularity > pivot.popularity) { // Se o elemento atual for menor que o pivô
                 i++; // Incrementa o índice do menor elemento
                 std::swap(films[i], films[j]); // Troca os elementos
                 result.movements += 2; // Contabiliza duas movimentações (swap)
@@ -26,7 +26,7 @@ void Sort::quicksortHelper(std::vector<Film> &films, int low, int high, SortResu
 }
 
 // Função principal do Quicksort que inicializa o resultado e mede o tempo de execução
-Sort::SortResult Sort::quicksort(std::vector<Film> &films) {
+Quicksort::SortResult Quicksort::quicksort(std::vector<Film> &films) {
     SortResult result = {0, 0, 0}; // Inicializa as métricas de desempenho
     auto start = std::chrono::high_resolution_clock::now(); // Marca o início da execução
     

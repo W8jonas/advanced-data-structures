@@ -5,9 +5,11 @@
 #include <chrono>
 #include "film.h" // Include Film structure
 
-class Sort {
+class Quicksort
+{
 public:
-    struct SortResult {
+    struct SortResult
+    {
         int comparisons; // Number of comparisons made
         int movements;   // Number of movements made (swaps)
         double duration; // Duration of the sorting process in seconds
