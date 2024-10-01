@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
 #include <fstream>
 #include "metrics.h"
 
@@ -51,10 +52,28 @@ void Metrics::addMovements(int blockId)
 
 void Metrics::startTimer(int blockId)
 {
+  for (auto &block : blocks)
+  {
+    if (block.id == blockId)
+    {
+      block.startTime = std::chrono::steady_clock::now(); // Usando steady_clock
+      return;
+    }
+  }
 }
 
 void Metrics::stopTimer(int blockId)
 {
+  for (auto &block : blocks)
+  {
+    if (block.id == blockId)
+    {
+      auto endTime = std::chrono::steady_clock::now(); // Usando steady_clock
+      std::chrono::duration<double> diff = endTime - block.startTime;
+      block.duration = diff.count();
+      return;
+    }
+  }
 }
 
 Metrics::metricsBlock Metrics::getMetricsByBlockId(int blockId)
@@ -71,8 +90,35 @@ Metrics::metricsBlock Metrics::getMetricsByBlockId(int blockId)
 
 void Metrics::printResults()
 {
+  std::cout << "Resultados das métricas:\n";
+  std::cout << std::setprecision(9) << std::fixed;
+  for (const auto &block : blocks)
+  {
+    std::cout << "Bloco: " << block.label << " (ID: " << block.id << "):\n";
+    std::cout << "Comparações: " << block.comparisons << "\n";
+    std::cout << "Movimentações: " << block.movements << "\n";
+    std::cout << "Duração: " << block.duration << " segundos\n";
+  }
 }
 
 void Metrics::writeFileResults()
 {
+  std::ofstream outFile("metrics_results.txt");
+  if (outFile.is_open())
+  {
+    outFile << "Resultados das métricas:\n";
+    std::cout << std::setprecision(9) << std::fixed;
+    for (const auto &block : blocks)
+    {
+      outFile << "Bloco " << block.label << " (ID: " << block.id << "):\n";
+      outFile << "Comparações: " << block.comparisons << "\n";
+      outFile << "Movimentações: " << block.movements << "\n";
+      outFile << "Duração: " << block.duration << " segundos\n";
+    }
+    outFile.close();
+  }
+  else
+  {
+    std::cerr << "Erro ao abrir o arquivo para escrita!\n";
+  }
 }
