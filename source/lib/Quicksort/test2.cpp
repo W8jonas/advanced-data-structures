@@ -6,11 +6,13 @@
 // Função para testar o desempenho do Quicksort com filmes reais
 void testQuickSortPerformance() {
     // Caminhos para os arquivos CSV e binário
-    std::string csvPath = "../source/data/movies_dataset_min.csv";
-    std::string binaryPath = "../source/data/filmes.bin";
+    std::string entryPath = "../source/data/";
+    std::string csvFilename = "movies_dataset_min.csv";
+    std::string binaryFilename = "filmes.bin";
 
     // Cria uma instância de fileManager para gerenciar os arquivos CSV e binário
-    fileManager fm(csvPath, binaryPath);
+    fileManager fm(entryPath);
+    fm.convertCSV2Bin(csvFilename, binaryFilename);
     
     // Vetor para armazenar todos os filmes carregados do arquivo binário
     std::vector<Film> films;
@@ -23,7 +25,7 @@ void testQuickSortPerformance() {
     }
 
     // Aplica o algoritmo de Quicksort nos filmes
-    Sort::SortResult result = Sort::quicksort(films);
+    Quicksort::SortResult result = Quicksort::quicksort(films);
 
     // Exibe as métricas de desempenho
     std::cout << "Teste de desempenho com filmes reais:" << std::endl;
