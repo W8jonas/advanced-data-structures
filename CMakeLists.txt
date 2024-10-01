@@ -14,6 +14,8 @@ enable_testing()
 # Adicionar as bibliotecas .cpp
 add_library(FileManager source/lib/FileManager/fileManager.cpp)
 add_library(Quicksort source/lib/Quicksort/quicksort.cpp)
+add_library(Metrics source/lib/Metrics/metrics.cpp)
+add_library(Mergesort source/lib/Mergesort/mergesort.cpp) # Adiciona a biblioteca Mergesort
 
 # Configurar testes da classe FileManager
 add_executable(test1_FileManager source/lib/FileManager/test1.cpp)
@@ -38,13 +40,37 @@ add_executable(test2_Quicksort source/lib/Quicksort/test2.cpp)
 target_link_libraries(test1_Quicksort Quicksort FileManager) # Adiciona FileManager aqui se necessário
 target_link_libraries(test2_Quicksort Quicksort FileManager) # Adiciona FileManager aqui se necessário
 
-# Adicionar os testes de Quicksort mais tarde, quando implementados
+# Garantir que os arquivos de teste sejam considerados como testes
 add_test(NAME test1_Quicksort COMMAND test1_Quicksort)
 add_test(NAME test2_Quicksort COMMAND test2_Quicksort)
 
-# Adicionar o executável principal
+# Configurar testes da classe Metrics
+add_executable(test1_Metrics source/lib/Metrics/test1.cpp)
+add_executable(test2_Metrics source/lib/Metrics/test2.cpp)
+add_executable(test3_Metrics source/lib/Metrics/test3.cpp)
+
+# Vincular a biblioteca Metrics aos seus testes
+target_link_libraries(test1_Metrics Metrics)
+target_link_libraries(test2_Metrics Metrics)
+target_link_libraries(test3_Metrics Metrics)
+
+# Garantir que os arquivos de teste sejam considerados como testes
+add_test(NAME test1_Metrics COMMAND test1_Metrics)
+add_test(NAME test2_Metrics COMMAND test2_Metrics)
+add_test(NAME test3_Metrics COMMAND test3_Metrics)
+
+# Configurar testes da classe Mergesort
+add_executable(test1_Mergesort source/lib/Mergesort/test1.cpp) # Teste para Mergesort
+
+# Vincular a biblioteca Mergesort e FileManager ao teste do Mergesort
+target_link_libraries(test1_Mergesort Mergesort FileManager)
+
+# Garantir que o arquivo de teste do Mergesort seja considerado como teste
+add_test(NAME test1_Mergesort COMMAND test1_Mergesort)
+
+# Adicionar o executável principal e vincula as classes
 add_executable(viier_exec source/main.cpp)
-target_link_libraries(viier_exec FileManager Quicksort) # Vincula ambas as bibliotecas
+target_link_libraries(viier_exec FileManager Quicksort Metrics Mergesort) # Adiciona Mergesort aqui
 
 # Especificar o diretório de saída para executáveis
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../build)
