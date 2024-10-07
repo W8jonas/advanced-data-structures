@@ -2,6 +2,8 @@
 #include <vector>
 #include <chrono>
 #include <fstream>
+#include <iomanip>
+#include <sstream>
 #include "metrics.h"
 
 int Metrics::currentId = 0;
@@ -101,24 +103,23 @@ void Metrics::printResults()
   }
 }
 
-void Metrics::writeFileResults()
+std::string Metrics::getFormattedResults()
 {
-  std::ofstream outFile("metrics_results.txt");
-  if (outFile.is_open())
+  std::ostringstream outFile;
+  outFile << "Resultados das métricas:\n\n";
+  std::cout << std::setprecision(9) << std::fixed;
+  int i = 0;
+  for (const auto &block : blocks)
   {
-    outFile << "Resultados das métricas:\n";
-    std::cout << std::setprecision(9) << std::fixed;
-    for (const auto &block : blocks)
+    outFile << "Bloco " << block.label << " (ID: " << block.id << "):\n";
+    outFile << "Comparações: " << block.comparisons << "\n";
+    outFile << "Movimentações: " << block.movements << "\n";
+    outFile << "Duração: " << block.duration << " segundos\n";
+    if (i != blocks.size() - 1)
     {
-      outFile << "Bloco " << block.label << " (ID: " << block.id << "):\n";
-      outFile << "Comparações: " << block.comparisons << "\n";
-      outFile << "Movimentações: " << block.movements << "\n";
-      outFile << "Duração: " << block.duration << " segundos\n";
+      outFile << "--------------------------------\n";
     }
-    outFile.close();
+    i++;
   }
-  else
-  {
-    std::cerr << "Erro ao abrir o arquivo para escrita!\n";
-  }
+  return outFile.str();
 }

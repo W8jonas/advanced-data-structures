@@ -14,10 +14,10 @@ public:
     std::string label;
     int comparisons;
     int movements;
-    std::chrono::steady_clock::time_point startTime;  // Corrigido o namespace
+    std::chrono::steady_clock::time_point startTime; // Corrigido o namespace
     double duration;
   };
-  
+
   Metrics();
   int createBlock(std::string label);
   void addComparisons(int blockId);
@@ -25,7 +25,7 @@ public:
   void startTimer(int blockId);
   void stopTimer(int blockId);
   void printResults();
-  void writeFileResults();
+  std::string getFormattedResults();
   metricsBlock getMetricsByBlockId(int blockId);
 
 private:
