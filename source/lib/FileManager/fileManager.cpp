@@ -1,14 +1,13 @@
+#include "fileManager.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <random>
 #include <cstring>
-#include "fileManager.h"
 
 // Construtor - verifica inicializa os caminhos dos arquivos e chama convertCSV2Bin
 fileManager::fileManager(const std::string &entryPath)
 {
-
   if (entryPath.empty())
   {
     std::cout << "Erro: Parâmetros inválidos: Caminho para a pasta de arquivos está vazio." << std::endl;
@@ -178,13 +177,14 @@ std::vector<std::string> fileManager::getFileRead(std::string filename)
   }
 
   std::vector<std::string> fileData;
-  bool error = false;
-  while (!error)
+  while (true)
   {
-    error = getNextLine(file, fileData);
+    std::string line;
+    std::getline(file, line);
 
-    if (error)
+    if (line.empty())
       break;
+    fileData.push_back(line);
   }
   file.close();
   return fileData;
@@ -192,13 +192,15 @@ std::vector<std::string> fileManager::getFileRead(std::string filename)
 
 void fileManager::writeFile(std::string filename, std::string content)
 {
-  std::ifstream file;
+  std::ofstream file;
   file.open(this->entryPath + filename);
   if (!file.is_open())
   {
     std::cout << "Erro ao abrir o arquivo " << this->entryPath + filename << std::endl;
     throw std::runtime_error("Erro ao abrir o arquivo.");
   }
+  file << content;
+  file.close();
 }
 
 // Método para obter um filme pelo ID sendo ID o índice do vetor
@@ -220,15 +222,15 @@ Film fileManager::getFilmeById(int id)
   // verifica se o filme encontrado tem nome, se não tiver nome é sinal que não foi encontrado o filme
   if (!film.originalTitle)
   {
-    std::cout << "ID do filme inválido!" << std::endl;
-    throw std::out_of_range("ID do filme inválido.");
+    std::cout << "O filme com ID " << id << " não foi encontrado!" << std::endl;
+    film = {};
   }
 
   binaryFile.close();
   return film;
 }
 
-// Método para obter 'n' filmes aleatórios
+// Método para obter N filmes aleatórios e retorná-los em um vetor
 void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
 {
   std::ifstream binaryFile;
@@ -240,34 +242,26 @@ void fileManager::getRandomNFilms(int n, std::vector<Film> &filmArray)
   }
 
   binaryFile.seekg(0, std::ios::end);
-  int fileSize = binaryFile.tellg();
-  int numFilms = fileSize / sizeof(Film);
+  size_t fileSize = binaryFile.tellg();
+  size_t totalFilms = fileSize / sizeof(Film);
 
-  std::random_device rd;
+  std::random_device rd; // Para números aleatórios
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> distrib(0, numFilms - 1);
+  std::uniform_int_distribution<> distrib(0, totalFilms - 1);
 
   for (int i = 0; i < n; ++i)
   {
     int randomIndex = distrib(gen);
-
-    // Ler o filme aleatório
-    binaryFile.seekg(randomIndex * sizeof(Film), std::ios::beg);
     Film film;
+    binaryFile.seekg(randomIndex * sizeof(Film), std::ios::beg);
     binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
-
-    if (!film.originalTitle)
-    {
-      throw std::runtime_error("Erro ao ler o filme aleatório do arquivo binário!");
-    }
-
-    filmArray.push_back(film); // Adicionar o filme à lista
+    filmArray.push_back(film);
   }
 
   binaryFile.close();
 }
 
-// Método para obter todos os filmes
+// Método para obter todos os filmes e retorná-los em um vetor
 void fileManager::getAllFilms(std::vector<Film> &filmArray)
 {
   std::ifstream binaryFile;
@@ -279,23 +273,42 @@ void fileManager::getAllFilms(std::vector<Film> &filmArray)
   }
 
   binaryFile.seekg(0, std::ios::end);
-  int fileSize = binaryFile.tellg();
-  int numFilms = fileSize / sizeof(Film);
-
+  size_t fileSize = binaryFile.tellg();
+  size_t totalFilms = fileSize / sizeof(Film);
   binaryFile.seekg(0, std::ios::beg);
 
-  for (int i = 0; i < numFilms; ++i)
+  for (size_t i = 0; i < totalFilms; ++i)
   {
     Film film;
     binaryFile.read(reinterpret_cast<char *>(&film), sizeof(Film));
-
-    if (binaryFile.gcount() < sizeof(Film))
-    {
-      throw std::runtime_error("Erro ao ler um filme do arquivo binário!");
-    }
-
     filmArray.push_back(film);
   }
 
   binaryFile.close();
+}
+
+// Método para salvar N overviews aleatórios em um arquivo binário
+void fileManager::saveRandomOverviewsToBinary(const std::string &binaryFile, int N)
+{
+  std::vector<Film> films;
+  getRandomNFilms(N, films); // Recupera N filmes aleatórios
+
+  std::ofstream output(this->entryPath + binaryFile, std::ios::binary);
+  if (!output.is_open())
+  {
+    std::cerr << "Erro ao abrir o arquivo binário para escrita.\n"
+              << this->entryPath + binaryFile << std::endl;
+    return;
+  }
+
+  // Escreve as "overviews" dos filmes no arquivo binário
+  for (const auto &film : films)
+  {
+    std::string overview = film.overview; // Acessa diretamente o campo overview
+    size_t length = overview.size();
+    output.write(reinterpret_cast<const char *>(&length), sizeof(length)); // Escreve o tamanho da string
+    output.write(overview.c_str(), length);                                // Escreve a string
+  }
+
+  output.close();
 }

@@ -15,6 +15,7 @@ public:
   std::vector<std::string> getFileRead(std::string filename);
   void writeFile(std::string filename, std::string content);
   void convertCSV2Bin(const std::string &csvFilename, const std::string &binaryFilename);
+  void saveRandomOverviewsToBinary(const std::string &binaryFile, int N); // Método adicionado
 
 private:
   std::string entryPath;
