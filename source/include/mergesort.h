@@ -3,21 +3,19 @@
 
 #include <vector>
 #include <chrono>
-#include "film.h" // Include Film structure
+#include "metrics.h"
 
-class Mergesort {
+template <typename T>
+class Mergesort
+{
 public:
-    struct SortResult {
-        int comparisons; // Number of comparisons made
-        int movements;   // Number of movements made (swaps)
-        double duration; // Duration of the sorting process in seconds
-    };
-
-    static SortResult mergesort(std::vector<Film> &films);
+    static void mergesort(std::vector<T> &items, Metrics *metrics = nullptr, int metricsId = -1);
 
 private:
-    static void mergesortHelper(std::vector<Film> &films, int left, int right, SortResult &result);
-    static void merge(std::vector<Film> &films, int left, int mid, int right, SortResult &result);
+    static void mergesortHelper(std::vector<T> &items, int left, int right, Metrics *metrics, int metricsId);
+    static void merge(std::vector<T> &items, int left, int mid, int right, Metrics *metrics, int metricsId);
 };
+
+#include "mergesort.tpp"
 
 #endif // MERGESORT_H
