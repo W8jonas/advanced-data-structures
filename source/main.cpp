@@ -1,35 +1,37 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include "metrics.h"
+#include "quicksort.h"
 #include "fileManager.h"
-
-using namespace std;
 
 int main()
 {
-  string csvPath = "../source/data/movies_dataset.csv";
-  string binaryPath = "../source/data/filmes.bin";
+  Metrics testMetrics;
 
-  try
+  auto id = testMetrics.createBlock("Bloco 1");
+
+  std::string entryPath = "../source/data/";
+  std::string csvFilename = "movies_dataset.csv";
+  std::string binaryFilename = "filmes.bin";
+
+  fileManager fm(entryPath);
+
+  fm.convertCSV2Bin(csvFilename, binaryFilename);
+
+  std::vector<Film> films;
+  fm.getRandomNFilms(40, films);
+
+  testMetrics.startTimer(id);
+  Quicksort<Film>::quicksort(films);
+  testMetrics.stopTimer(id);
+
+  for (size_t i = 1; i < 5; ++i)
   {
-    fileManager fManager(csvPath, binaryPath);
-
-    // Lê filme de indice 2
-    Film specificFilm = fManager.getFilmeById(4);
-    std::cout << "Nome do filme: " << specificFilm.originalTitle << " popularidade: " << specificFilm.popularity << " voto_average: " << specificFilm.voteAverage << std::endl;
-    std::cout << std::endl;
-
-    // Lê N filmes aleatórios
-    vector<Film> filmList;
-    fManager.getRandomNFilms(3, filmList);
-    for (int i = 0; i < filmList.size(); i++)
-    {
-      std::cout << "Nome do filme: " << filmList[i].originalTitle << " popularidade: " << filmList[i].popularity << " voto_average: " << filmList[i].voteAverage << std::endl;
-    }
-    std::cout << std::endl;
+    std::cout << "Nome do filme: " << films[i].title << " popularidade: " << films[i].popularity << std::endl;
   }
-  catch (const std::exception &e)
-  {
-    std::cout << e.what() << std::endl;
-  }
+
+  testMetrics.printResults();
 
   return 0;
 }
