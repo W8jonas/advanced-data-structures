@@ -72,8 +72,11 @@ add_test(NAME test1_Heapsort COMMAND test1_Heapsort)
 
 # Configurar testes da classe Hash
 add_executable(test1_Hash source/lib/Hash/test1.cpp)
+add_executable(test2_Hash source/lib/Hash/test2.cpp)
 target_link_libraries(test1_Hash Hash)
+target_link_libraries(test2_Hash Hash)
 add_test(NAME test1_Hash COMMAND test1_Hash)
+add_test(NAME test2_Hash COMMAND test2_Hash)
 
 # Incluir testes da classe RedBlackTree
 add_executable(test1_RedBlack source/lib/RedBlackTree/test1.cpp)
