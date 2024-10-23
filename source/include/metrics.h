@@ -27,6 +27,7 @@ public:
   void printResults();
   std::string getFormattedResults();
   metricsBlock getMetricsByBlockId(int blockId);
+  metricsBlock calculateAverageMetrics(const std::vector<int> &ids);
 
 private:
   std::vector<metricsBlock> blocks;
