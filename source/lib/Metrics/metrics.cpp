@@ -90,6 +90,41 @@ Metrics::metricsBlock Metrics::getMetricsByBlockId(int blockId)
   throw std::invalid_argument("Bloco com o ID fornecido não encontrado.");
 }
 
+Metrics::metricsBlock Metrics::calculateAverageMetrics(const std::vector<int> &ids)
+{
+  metricsBlock averageMetrics;
+  int totalComparisons = 0;
+  int totalMovements = 0;
+  double totalDuration = 0.0;
+  int count = 0;
+
+  for (const int id : ids)
+  {
+    if (id >= 0 && id < blocks.size())
+    {
+      totalComparisons += blocks[id].comparisons;
+      totalMovements += blocks[id].movements;
+      totalDuration += blocks[id].duration;
+      count++;
+    }
+  }
+
+  if (count > 0)
+  {
+    averageMetrics.comparisons = totalComparisons / count;
+    averageMetrics.movements = totalMovements / count;
+    averageMetrics.duration = totalDuration / count;
+  }
+  else
+  {
+    averageMetrics.comparisons = 0;
+    averageMetrics.movements = 0;
+    averageMetrics.duration = 0.0;
+  }
+
+  return averageMetrics;
+}
+
 void Metrics::printResults()
 {
   std::cout << "Resultados das métricas:\n";
