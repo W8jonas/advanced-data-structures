@@ -1,4 +1,4 @@
-# Trabalho Prático - Estrutura de Dados II
+# Trabalho Prático - Estrutura de Dados II UFJF
 
 ## Equipe:
  - Caio Henrique Vieira Costa - [LinkedIn](https://www.linkedin.com/in/caioviier/)
