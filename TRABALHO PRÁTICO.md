@@ -89,16 +89,16 @@ Nesta etapa, você irá comparar o desempenho das estruturas implementadas quant
 2. realizar a inserção desses registros na estrutura. Durante a inserção, deverão ser computados o total de comparações de chaves e o tempo de execução;  
 3. realizar a busca de outros B registros aleatórios na estrutura. Durante as buscas, também deverão ser computados o total de comparações de chaves e o tempo de execução;
 
-Para gerar as estatísticas de desempenho, você deverá executar os passos acima, minimamente, M \= 3 vezes, para N \= 20000. Ao final, compute as médias de cada uma das métricas (comparações e tempo) obtidas para as M execuções.   
+Para gerar as estatísticas de desempenho, o programa deverá executar os passos acima, minimamente, M = 3 vezes, para N = 20000. Ao final, compute as médias de cada uma das métricas (comparações e tempo) obtidas para as M execuções.   
 As estruturas de dados que devem ser analisadas são as seguintes:
 
 * Árvore Vermelho-Preto  
-* Árvore B (m \= 20\)  
-* Árvore B (m \= 200\)
+* Árvore B (m = 20)  
+* Árvore B (m = 200)
 
 Considere que a ordem m da árvore B representa o número **máximo** de filhos em cada nó (exceto a raiz), conforme visto em sala de aula. **Não há necessidade de se manter preso aos valores de m especificados acima**, o grupo pode adotar valores diferentes (ou mais que dois valores) para os testes. Tenha o cuidado, no entanto, de escolher valores que permitam avaliar a diferença no desempenho para árvores de ordem baixa e árvores de ordem alta.
 
-O seu programa deve se chamar compara_tree e deve salvar todos os resultados obtidos em um arquivo compara_tree.txt, contendo tanto os resultados individuais quanto a média final.
+O programa deve se chamar compara_tree e deve salvar todos os resultados obtidos em um arquivo compara_tree.txt, contendo tanto os resultados individuais quanto a média final.
 
 ***Etapa 5 -  Compressão dos Overviews***
 
@@ -117,7 +117,7 @@ O grupo deverá confeccionar um relatório completo contendo todas as análises 
 * decisões de implementação;  
 * toda e qualquer referência utilizada no desenvolvimento do trabalho.
 
-Note que esse relatório deve ser formal e bem redigido. A divisão de tarefas do trabalho se aplica somente à implementação. Todo o grupo é responsável pelo relatório (escrita e revisão).
+
 
 5. **Exigências**
 
@@ -135,34 +135,4 @@ O trabalho deverá, obrigatoriamente, atender aos seguintes requisitos:
 * Não é permitida a utilização de bibliotecas externas. Os algoritmos de ordenação devem ser implementados pelo grupo. Caso haja dúvida quanto à utilização de alguma função ou biblioteca, entre em contato com o professor.  
 * Obviamente, todo código deve ser de autoria do grupo. Não é permitida a utilização de códigos de terceiros ou de outros grupos. É permitida a pesquisa por estratégias para a solução dos problemas (e as r**eferências utilizadas nessas pesquisas devem constar do relatório**), porém a apropriação de código alheio não será aceita. **Qualquer tentativa de plágio identificada resultará em nota zero. Os códigos fontes serão analisados pelo sistema Moss ([http://theory.stanford.edu/\~aiken/moss/](http://theory.stanford.edu/~aiken/moss/))**  
 * **Todos os componentes do grupo devem submeter suas contribuições no GitHub via *commits***.  Uma forma de avaliação individual será os históricos de submissão. Por tanto, submissão por upload de arquivos serão penalizadas.
-
-
-6. **Entrega**
-
-O grupo deverá ser formado por **no mínimo 3** e **no máximo 4** alunos, e as responsabilidades de cada aluno devem ser documentadas e registradas. Não é permitido que algum integrante do grupo fique responsável somente pela confecção do relatório. Todos os integrantes devem contribuir com a implementação. A distribuição das responsabilidades deve ser feita de maneira uniforme, de modo que cada membro do grupo se envolva com o trabalho na mesma proporção que os demais.
-
-Todos os itens abaixo devem ser entregues:
-
-1. Código-fonte completo;  
-   1. Deve ser submetido um link para um repositório git (github) contendo o código do trabalho;  
-   2. **Não incluir o dataset na submissão via Google Classroom nem no github (nem o .csv nem o .bin).**  
-2. Relatório em **Google Docs** atendendo ao especificado na Seção 4 deste documento.
-
-**7. Critérios de avaliação**
-
-O grupo será avaliado conforme os seguintes critérios:
-
-* Execução correta do código (E);  
-* Desempenho do programa (D): evitar o consumo excessivo de memória, e o tempo de execução deve estar em limites aceitáveis para o problema tratado;  
-* Atendimento ao que foi solicitado (A) (valor entre 0 e 1);  
-* Organização do código (O): seu código deve estar bem modularizado e bem documentado;  
-* Qualidade do relatório apresentado (R).
-
-Cada membro do grupo será avaliado individualmente, tanto com relação aos detalhes de implementação que ficaram sob sua responsabilidade, quanto ao entendimento em alto nível de abstração do que foi feito pelo grupo como um todo. O entendimento teórico do conteúdo relacionado ao trabalho também será avaliado (pelo relatório e na entrevista). A nota individual (M) será um valor de 0 a 1 que irá ponderar a nota da implementação.
-
-A nota final de cada integrante será computada segundo a seguinte fórmula:
-
-Nota \=  M\*(A\*(E \+ D) \+ O) \+ R
-
-O critério (A) será considerado conforme a composição do grupo. O objetivo é evitar que algum aluno seja prejudicado pela desistência de outros membros do grupo. **Caso algum membro do seu grupo tranque ou abandone a disciplina, comunique o professor quanto antes para que se possa discutir alternativas.**
 
