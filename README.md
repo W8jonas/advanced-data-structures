@@ -10,4 +10,4 @@ Basta acessar a pasta build e rodar `cmake ..`, depois `make`.
 
 ## Como executar?
 Execute o comando `ctest` para rodar todos os testes.
-
+Para executar o programa compara_sort basta rodar `./compara_sort ../source/data/`
